@@ -51,9 +51,16 @@ async function onSubmit(event: FormSubmitEvent<any>) {
   const res = await $fetch("http://localhost:8080/words", {
     method: 'POST',
     body: data
+  }).catch(err => {
+    console.log(err)
+    toast.add({ title: err.status, description: err.message, color: 'danger' })
   })
+
   console.log(res)
-  toast.add({ title: res.status, description: res.message, color: 'success' })
+  if (res.status === 'success') {
+    toast.add({ title: res.status, description: res.message, color: 'success' })
+
+  }
 
   state.translation = ''
   state.text = ''
