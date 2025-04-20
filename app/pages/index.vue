@@ -48,7 +48,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     topicId: parseInt(topics.data.value.find(t => t.name === topicValue.value).ID)
   }
 
-  const res = await $fetch("http://localhost:8080/words", {
+  const res = await $fetch("http://94.131.107.205:8080/words", {
     method: 'POST',
     body: data
   }).catch(err => {
@@ -66,7 +66,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
   state.text = ''
 }
 
-const topics = await useFetch('http://localhost:8080/topics')
+const topics = await useFetch('http://94.131.107.205:8080/topics')
 const selectTopics = topics.data.value.map(t => t.name)
 console.log(selectTopics)
 const topicValue = ref(selectTopics[0])
