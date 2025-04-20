@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 
-const words = await useFetch('http://localhost:8080/words')
+const words = await useFetch('http://94.131.107.205:8080/words')
 console.log(words.data.value)
 </script>
 
