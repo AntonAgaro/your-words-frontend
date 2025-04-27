@@ -1,79 +1,78 @@
 <template>
-  <div>
-    <h1>Add new word:</h1>
+  <div class="flex flex-col justify-center items-center h-full gap-y-10">
+    <h1 class="text-2xl">Add new word:</h1>
 
     <div class="main-form">
-      <UForm :validate="validate" :state="state" class="space-y-4" @submit="onSubmit">
-        <UFormField label="Text" name="text">
-          <UInput v-model="state.text" />
+      <UForm :validate="validate" :state="state" class="space-y-4 w-full flex flex-col gap-4" @submit="onSubmit">
+        <UFormField label="Text" name="text" class="text-lg">
+          <UInput v-model="state.text" class="flex text-lg" size="xl" />
         </UFormField>
 
-        <UFormField label="Translation" name="translation">
-          <UInput v-model="state.translation" type="text" />
+        <UFormField label="Translation" name="translation" class="text-lg">
+          <UInput v-model="state.translation" type="text" class="flex text-lg" size="xl" />
         </UFormField>
 
-        <UFormField v-if="topics" label="Topic" name="topic">
-          <USelectMenu v-model="topicValue" :items="selectTopics" class="w-48" />
+        <UFormField v-if="topics" label="Topic" name="topic" class="text-lg">
+          <USelectMenu v-model="topicValue" :items="selectTopics" class="w-full text-lg" />
         </UFormField>
 
-
-        <UButton type="submit">
-          Submit
-        </UButton>
+        <UButton type="submit" class="text-lg flex justify-center items-center"> Submit </UButton>
       </UForm>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { FormError, FormSubmitEvent } from '@nuxt/ui'
+import type { FormError } from '@nuxt/ui';
+import useSsrFetch from '~/composables/useSsrFetch';
 
 const state = reactive({
   text: '',
-  translation: ''
-})
+  translation: '',
+});
 
+const { $api } = useNuxtApp();
 const validate = (state: any): FormError[] => {
-  const errors = []
-  if (!state.text) errors.push({ name: 'text', message: 'Required' })
-  if (!state.translation) errors.push({ name: 'translation', message: 'Required' })
-  return errors
-}
+  const errors = [];
+  if (!state.text) errors.push({ name: 'text', message: 'Required' });
+  if (!state.translation) errors.push({ name: 'translation', message: 'Required' });
+  return errors;
+};
 
-const toast = useToast()
-async function onSubmit(event: FormSubmitEvent<any>) {
+const toast = useToast();
+const topics = await useSsrFetch('topics-data', () => $api.topics.getTopics());
+const selectTopics = topics.map((t) => t.name);
+const topicValue = ref(selectTopics[0]);
+
+async function onSubmit() {
+  if (!topics?.length) {
+    console.log('No topics available');
+    return;
+  }
+
   const data = {
     text: state.text,
     translation: state.translation,
-    topicId: parseInt(topics.data.value.find(t => t.name === topicValue.value).ID)
-  }
+    topicId: parseInt(topics.find((t) => t.name === topicValue.value).ID),
+  };
 
-  const res = await $fetch("http://94.131.107.205:8080/words", {
-    method: 'POST',
-    body: data
-  }).catch(err => {
-    console.log(err)
-    toast.add({ title: err.status, description: err.message, color: 'danger' })
-  })
+  const res = await $api.words.saveWord(data).catch((err) => {
+    console.log(err);
+    toast.add({ title: err.status, description: err.message, color: 'danger' });
+  });
 
-  console.log(res)
   if (res.status === 'success') {
-    toast.add({ title: res.status, description: res.message, color: 'success' })
-
+    toast.add({ title: res.status, description: res.message, color: 'success' });
   }
 
-  state.translation = ''
-  state.text = ''
+  state.translation = '';
+  state.text = '';
 }
-
-const topics = await useFetch('http://94.131.107.205:8080/topics')
-const selectTopics = topics.data.value.map(t => t.name)
-console.log(selectTopics)
-const topicValue = ref(selectTopics[0])
-console.log(topicValue)
-
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.main-form {
+  width: 100%;
+  max-width: 400px;
+}
 </style>

@@ -9,5 +9,10 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   devServer: {
     port: 5000
+  },
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8080',
+    },
   }
 })
