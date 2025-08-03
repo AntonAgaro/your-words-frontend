@@ -9,6 +9,12 @@ export class AuthRepository extends RepositoryFactory {
     });
   }
 
+  async register(data: FormData) {
+    return this.call('/auth/register', {
+      method: 'POST',
+      body: data,
+    });
+  }
   async getUser(token: string): Promise<GetUserResponse> {
     return this.call('/users/me', {
       headers: {

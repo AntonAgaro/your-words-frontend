@@ -18,19 +18,6 @@
         </UFormField>
         <UFormField label="Password" name="password" class="text-lg" :error="errorsToShow('password')[0]">
           <UInput
-            v-model="form.values.email as string"
-            type="text"
-            class="flex text-lg"
-            size="xl"
-            @blur="
-              setInFocusValue('email', true);
-              validateField('email');
-            "
-            @focus="setInFocusValue('email', false)"
-          />
-        </UFormField>
-        <UFormField label="Password" name="password" class="text-lg" :error="errorsToShow('password')[0]">
-          <UInput
             v-model="form.values.password as string"
             type="text"
             class="flex text-lg"
@@ -42,6 +29,19 @@
             @focus="setInFocusValue('password', false)"
           />
         </UFormField>
+        <UFormField label="Email" name="email" class="text-lg" :error="errorsToShow('email')[0]">
+          <UInput
+            v-model="form.values.email as string"
+            type="text"
+            class="flex text-lg"
+            size="xl"
+            @blur="
+              setInFocusValue('email', true);
+              validateField('email');
+            "
+            @focus="setInFocusValue('email', false)"
+          />
+        </UFormField>
         {{ form.values.password }}
         <UButton type="submit" class="text-lg flex justify-center items-center"> Submit </UButton>
       </UForm>
@@ -50,13 +50,14 @@
 </template>
 
 <script setup lang="ts">
-import useSsrFetch from '~/composables/useSsrFetch';
 import { useFormWithValidation } from '~/composables/formValidation/useFormWithValidation';
 import { ValidationRules } from '~/composables/formValidation/types';
+import { ResponseStatus } from '~/shared/Response/ResponseStatus';
+import { useAuthStore } from '~/composables/stores/authStore/useAuthStore';
 
 const { $api } = useNuxtApp();
 
-const { form, errorsToShow, setInFocusValue, validateField } = useFormWithValidation([
+const { form, errorsToShow, setInFocusValue, validateField, sendForm } = useFormWithValidation([
   {
     name: 'username',
     value: '',
@@ -70,16 +71,39 @@ const { form, errorsToShow, setInFocusValue, validateField } = useFormWithValida
   {
     name: 'password',
     value: '',
-    rules: [{ type: ValidationRules.MinLength, value: 4, message: 'Name must be at least 4 characters long' }],
+    rules: [{ type: ValidationRules.MinLength, value: 4, message: 'Password must be at least 4 characters long' }],
   },
 ]);
 
 const toast = useToast();
-const topics = await useSsrFetch('topics-data', () => $api.topics.getTopics());
-const selectTopics = topics.map((t) => t.name);
-const topicValue = ref(selectTopics[0]);
 
-async function onSubmit() {}
+async function onSubmit() {
+  await sendForm({
+    send: $api.auth.register.bind($api.auth),
+    afterSend: async (res) => {
+      if (res.status === ResponseStatus.Error) {
+        toast.add({
+          title: 'Error',
+          description: res.message,
+          color: 'error',
+        });
+      }
+
+      if (res.status === ResponseStatus.Success) {
+        toast.add({
+          title: 'Success',
+          description: res.message,
+          color: 'success',
+        });
+
+        const { set } = useAuthStore();
+        set('user', res.user);
+
+        await navigateTo('/words/add/');
+      }
+    },
+  });
+}
 </script>
 
 <style lang="scss" scoped>

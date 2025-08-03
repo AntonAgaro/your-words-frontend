@@ -53,7 +53,7 @@ const { form, errorsToShow, setInFocusValue, validateField, sendForm } = useForm
   {
     name: 'password',
     value: '',
-    rules: [{ type: ValidationRules.MinLength, value: 4, message: 'Name must be at least 4 characters long' }],
+    rules: [{ type: ValidationRules.MinLength, value: 4, message: 'Password must be at least 4 characters long' }],
   },
 ]);
 
@@ -62,7 +62,7 @@ const toast = useToast();
 async function onSubmit() {
   await sendForm({
     send: $api.auth.login.bind($api.auth),
-    afterSend: async (res, form) => {
+    afterSend: async (res) => {
       if (res.status === ResponseStatus.Error) {
         toast.add({
           title: 'Error',
