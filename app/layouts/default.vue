@@ -3,7 +3,7 @@
     <div class="container wrapper">
       <header class="flex gap-2">
         <NuxtLink to="/">Main</NuxtLink>
-        <NuxtLink to="/words">Words</NuxtLink>
+        <NuxtLink to="/words/all">Words</NuxtLink>
       </header>
       <div class="main mt-4">
         <slot />
@@ -13,5 +13,4 @@
   </UApp>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
