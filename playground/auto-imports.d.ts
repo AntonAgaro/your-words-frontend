@@ -62,7 +62,7 @@ declare global {
   const triggerRef: typeof import('vue')['triggerRef']
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
-  const useAuthStore: typeof import('../app/composables/stores/useAuthStore')['useAuthStore']
+  const useAuthStore: typeof import('../app/composables/stores/authStore/useAuthStore')['useAuthStore']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
   const useFormWithValidation: typeof import('../app/composables/formValidation/useFormWithValidation')['useFormWithValidation']

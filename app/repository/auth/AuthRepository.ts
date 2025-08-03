@@ -1,4 +1,5 @@
 import { RepositoryFactory } from '~/repository/RepositoryFactory';
+import type { GetUserResponse } from '~/repository/auth/types';
 
 export class AuthRepository extends RepositoryFactory {
   async login(data: FormData) {
@@ -8,7 +9,11 @@ export class AuthRepository extends RepositoryFactory {
     });
   }
 
-  async getUser() {
-    return this.call('');
+  async getUser(token: string): Promise<GetUserResponse> {
+    return this.call('/users/me', {
+      headers: {
+        cookie: `token=${token}`,
+      },
+    });
   }
 }

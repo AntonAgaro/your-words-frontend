@@ -27,7 +27,12 @@
 <script setup lang="ts">
 import RegisterForm from '~/components/auth/RegisterForm.vue';
 import LoginForm from '~/components/auth/LoginForm.vue';
+import { useAuthStore } from '~/composables/stores/authStore/useAuthStore';
 
+const { get } = useAuthStore();
+if (get('user')) {
+  await navigateTo('/words/add/');
+}
 enum StateTypes {
   Login = 'login',
   Register = 'register',

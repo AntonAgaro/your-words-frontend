@@ -1,13 +1,12 @@
-import { useAuthStore } from '~/composables/stores/useAuthStore';
+import { useAuthStore } from '~/composables/stores/authStore/useAuthStore';
 
 const PRIVATE_ROUTES = ['/words'];
 
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware((to) => {
   const { get } = useAuthStore();
-  const userId = get('userId');
-
+  const user = get('user');
   for (const route of PRIVATE_ROUTES) {
-    if (!userId && to.path.startsWith(route)) {
+    if (!user?.id && to.path.startsWith(route)) {
       return navigateTo('/');
     }
   }

@@ -1,6 +1,8 @@
+import type { AuthStore } from '~/composables/stores/authStore/types';
+
 export function useAuthStore() {
   const store = useState<AuthStore>('authStore', () => ({
-    userId: null,
+    user: null,
   }));
 
   function get<K extends keyof AuthStore>(key: K) {
@@ -12,8 +14,4 @@ export function useAuthStore() {
   }
 
   return { get, set };
-}
-
-interface AuthStore {
-  userId: string | null;
 }

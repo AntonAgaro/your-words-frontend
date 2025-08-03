@@ -37,11 +37,10 @@
 </template>
 
 <script setup lang="ts">
-import useSsrFetch from '~/composables/useSsrFetch';
 import { useFormWithValidation } from '~/composables/formValidation/useFormWithValidation';
 import { ValidationRules } from '~/composables/formValidation/types';
 import { ResponseStatus } from '~/shared/Response/ResponseStatus';
-import { useAuthStore } from '~/composables/stores/useAuthStore';
+import { useAuthStore } from '~/composables/stores/authStore/useAuthStore';
 
 const { $api } = useNuxtApp();
 
@@ -80,11 +79,9 @@ async function onSubmit() {
         });
 
         const { set } = useAuthStore();
-        set('userId', res.userId);
+        set('user', res.user);
 
-        setTimeout(() => {
-          navigateTo('/words/add/');
-        }, 500);
+        await navigateTo('/words/add/');
       }
     },
   });
