@@ -12,6 +12,9 @@ export default defineNuxtPlugin({
 
         if (import.meta.browser) {
           options.credentials = 'include';
+        } else {
+          const token = useCookie('token');
+          options.headers.set('cookie', `token=${token.value}`);
         }
       },
     });

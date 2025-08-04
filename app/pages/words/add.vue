@@ -16,7 +16,14 @@
           <USelectMenu v-model="topicValue" :items="selectTopics" class="w-full text-lg" />
         </UFormField>
 
-        <UButton type="submit" class="text-lg flex justify-center items-center"> Submit </UButton>
+        <UButton
+          :loading="loading"
+          loading-icon="i-lucide-loader"
+          type="submit"
+          class="text-lg flex justify-center items-center"
+        >
+          Submit
+        </UButton>
       </UForm>
     </div>
   </div>
@@ -30,7 +37,7 @@ const state = reactive({
   text: '',
   translation: '',
 });
-
+const loading = ref(false);
 const { $api } = useNuxtApp();
 const validate = (state: any): FormError[] => {
   const errors = [];
@@ -55,11 +62,17 @@ async function onSubmit() {
     translation: state.translation,
     topicId: parseInt(topics.find((t) => t.name === topicValue.value).ID),
   };
-
-  const res = await $api.words.saveWord(data).catch((err) => {
-    console.log(err);
-    toast.add({ title: err.status, description: err.message, color: 'danger' });
-  });
+  loading.value = true;
+  //TODO обработать 409
+  const res = await $api.words
+    .saveWord(data)
+    .catch((err) => {
+      console.log(err);
+      toast.add({ title: err.status, description: err.message, color: 'danger' });
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 
   if (res.status === 'success') {
     toast.add({ title: res.status, description: res.message, color: 'success' });

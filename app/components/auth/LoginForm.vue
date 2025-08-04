@@ -29,8 +29,14 @@
             @focus="setInFocusValue('password', false)"
           />
         </UFormField>
-        {{ form.values.password }}
-        <UButton type="submit" class="text-lg flex justify-center items-center"> Submit </UButton>
+        <UButton
+          type="submit"
+          :loading="loading"
+          loading-icon="i-lucide-loader"
+          class="text-lg flex justify-center items-center"
+        >
+          Submit
+        </UButton>
       </UForm>
     </div>
   </div>
@@ -43,6 +49,7 @@ import { ResponseStatus } from '~/shared/Response/ResponseStatus';
 import { useAuthStore } from '~/composables/stores/authStore/useAuthStore';
 
 const { $api } = useNuxtApp();
+const loading = ref(false);
 
 const { form, errorsToShow, setInFocusValue, validateField, sendForm } = useFormWithValidation([
   {
@@ -61,8 +68,12 @@ const toast = useToast();
 
 async function onSubmit() {
   await sendForm({
+    beforeSend: async () => {
+      loading.value = true;
+    },
     send: $api.auth.login.bind($api.auth),
     afterSend: async (res) => {
+      loading.value = false;
       if (res.status === ResponseStatus.Error) {
         toast.add({
           title: 'Error',
