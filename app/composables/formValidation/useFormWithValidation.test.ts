@@ -69,9 +69,10 @@ describe('useFormValidation', () => {
 
   test('should handle in-focus error logic correctly', async () => {
     validation.form.errors.email.push('Email is required');
+    validation.setInFocusValue('email', true);
     expect(validation.errorsToShow('email')).toHaveLength(0);
 
-    validation.setInFocusValue('email', true);
+    validation.setInFocusValue('email', false);
     expect(validation.errorsToShow('email')).toContain('Email is required');
   });
 

@@ -79,9 +79,12 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
-  export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
+  export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
   // @ts-ignore
   export type { ValidationRules, ValidationRule, FieldConfig, UseFormWithValidation } from '../app/composables/formValidation/types'
   import('../app/composables/formValidation/types')
+  // @ts-ignore
+  export type { AuthStore } from '../app/composables/stores/authStore/types'
+  import('../app/composables/stores/authStore/types')
 }

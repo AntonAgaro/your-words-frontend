@@ -10,10 +10,10 @@
             class="flex text-lg"
             size="xl"
             @blur="
-              setInFocusValue('username', true);
+              setInFocusValue('username', false);
               validateField('username');
             "
-            @focus="setInFocusValue('username', false)"
+            @focus="setInFocusValue('username', true)"
           />
         </UFormField>
         <UFormField label="Password" name="password" class="text-lg" :error="errorsToShow('password')[0]">
@@ -23,10 +23,10 @@
             class="flex text-lg"
             size="xl"
             @blur="
-              setInFocusValue('password', true);
+              setInFocusValue('password', false);
               validateField('password');
             "
-            @focus="setInFocusValue('password', false)"
+            @focus="setInFocusValue('password', true)"
           />
         </UFormField>
         <UFormField label="Email" name="email" class="text-lg" :error="errorsToShow('email')[0]">
@@ -36,10 +36,10 @@
             class="flex text-lg"
             size="xl"
             @blur="
-              setInFocusValue('email', true);
+              setInFocusValue('email', false);
               validateField('email');
             "
-            @focus="setInFocusValue('email', false)"
+            @focus="setInFocusValue('email', true)"
           />
         </UFormField>
         <UButton
