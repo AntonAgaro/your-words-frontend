@@ -17,16 +17,19 @@
           />
         </UFormField>
         <UFormField label="Password" name="password" class="text-lg" :error="errorsToShow('password')[0]">
-          <UInput
+          <PasswordInput
             v-model="form.values.password as string"
-            type="text"
-            class="flex text-lg"
-            size="xl"
-            @blur="
-              setInFocusValue('password', false);
-              validateField('password');
+            :blur-handler="
+              () => {
+                setInFocusValue('password', false);
+                validateField('password');
+              }
             "
-            @focus="setInFocusValue('password', true)"
+            :focus-handler="
+              () => {
+                setInFocusValue('password', true);
+              }
+            "
           />
         </UFormField>
         <UButton
@@ -47,10 +50,11 @@ import { useFormWithValidation } from '~/composables/formValidation/useFormWithV
 import { ValidationRules } from '~/composables/formValidation/types';
 import { ResponseStatus } from '~/shared/Response/ResponseStatus';
 import { useAuthStore } from '~/composables/stores/authStore/useAuthStore';
+import PasswordInput from '~/components/shared/PasswordInput/PasswordInput.vue';
 
 const { $api } = useNuxtApp();
 const loading = ref(false);
-
+const showPassword = ref(false);
 const { form, errorsToShow, setInFocusValue, validateField, sendForm } = useFormWithValidation([
   {
     name: 'username',
