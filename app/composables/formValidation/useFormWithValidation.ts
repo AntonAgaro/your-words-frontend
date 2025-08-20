@@ -7,10 +7,10 @@ import {
   isOnlyLetters,
   isPhone,
   isPositiveNumeric,
+  isSame,
   isValidDate,
 } from '~/composables/formValidation/utils';
-import type { FieldConfig, UseFormWithValidation } from '~/composables/formValidation/types';
-import { ValidationRules } from '~/composables/formValidation/types';
+import { type FieldConfig, type UseFormWithValidation, ValidationRules } from '~/composables/formValidation/types';
 
 export function useFormWithValidation<T extends Record<string, any>>(
   fields: FieldConfig<T>[]
@@ -101,6 +101,15 @@ export function useFormWithValidation<T extends Record<string, any>>(
           break;
         case ValidationRules.isPhone:
           if (!isPhone(value)) {
+            form.errors[field].push(rule.message);
+          }
+          break;
+        case ValidationRules.isSame:
+          if (form.values[rule.comparingFieldName] === undefined) {
+            form.errors[field].push(rule.message);
+            break;
+          }
+          if (!isSame(value, form.values[rule.comparingFieldName] as string)) {
             form.errors[field].push(rule.message);
           }
           break;

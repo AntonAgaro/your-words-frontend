@@ -40,6 +40,10 @@ export function isMinMaxDate(value: string, minDate: string, maxDate: string): b
   );
 }
 
+export function isSame(first: string, second: string): boolean {
+  return first === second;
+}
+
 function formatDate(date: string): string {
   // DD.MM.YYYY to YYYY.MM.DD
   const dateArray = date.split('.');

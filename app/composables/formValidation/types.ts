@@ -12,6 +12,7 @@ export enum ValidationRules {
   isOnlyLetters = 'isOnlyLetters',
   isPhone = 'isPhone',
   isAnyFilled = 'isAnyFilled',
+  isSame = 'isSame',
 }
 
 export type ValidationRule =
@@ -27,6 +28,7 @@ export type ValidationRule =
   | { type: ValidationRules.isValidDate; message: string }
   | { type: ValidationRules.isOnlyLetters; message: string }
   | { type: ValidationRules.isPhone; message: string }
+  | { type: ValidationRules.isSame; message: string; comparingFieldName: string }
   | { type: ValidationRules.isAnyFilled; message: string };
 
 export type FieldConfig<T> = {

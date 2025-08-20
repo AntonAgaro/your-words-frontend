@@ -32,6 +32,27 @@
             "
           />
         </UFormField>
+        <UFormField
+          label="Repeat password"
+          name="repeatPassword"
+          class="text-lg"
+          :error="errorsToShow('repeatPassword')[0]"
+        >
+          <PasswordInput
+            v-model="form.values.repeatPassword as string"
+            :blur-handler="
+              () => {
+                setInFocusValue('repeatPassword', false);
+                validateField('repeatPassword');
+              }
+            "
+            :focus-handler="
+              () => {
+                setInFocusValue('repeatPassword', true);
+              }
+            "
+          />
+        </UFormField>
         <UFormField label="Email" name="email" class="text-lg" :error="errorsToShow('email')[0]">
           <UInput
             v-model="form.values.email as string"
@@ -82,6 +103,14 @@ const { form, errorsToShow, setInFocusValue, validateField, sendForm } = useForm
     name: 'password',
     value: '',
     rules: [{ type: ValidationRules.MinLength, value: 4, message: 'Password must be at least 4 characters long' }],
+  },
+  {
+    name: 'repeatPassword',
+    value: '',
+    rules: [
+      { type: ValidationRules.MinLength, value: 4, message: 'Passwords must be same' },
+      { type: ValidationRules.isSame, comparingFieldName: 'password', message: 'Passwords must be same' },
+    ],
   },
 ]);
 
