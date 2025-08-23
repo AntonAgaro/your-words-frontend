@@ -1,6 +1,6 @@
 <template>
   <ClientOnly v-if="!colorMode?.forced">
-    <UIcon name="i-mdi-theme-light-dark" size="32" @click="isDark = !isDark" />
+    <UIcon :name="isDark ? 'i-heroicons:moon-solid' : 'i-heroicons:sun'" size="32" @click="isDark = !isDark" />
   </ClientOnly>
 </template>
 

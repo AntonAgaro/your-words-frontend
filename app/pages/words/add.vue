@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center items-center h-full gap-y-10">
+  <div class="flex flex-col items-center h-full gap-y-10">
     <h1 class="text-2xl">Add new word:</h1>
 
     <div class="main-form">

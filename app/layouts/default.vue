@@ -6,14 +6,15 @@
       <!--        <NuxtLink to="/">Main</NuxtLink>-->
       <!--        <NuxtLink to="/words/all">Words</NuxtLink>-->
       <!--      </header>-->
-      <div class="main mt-4">
+      <div class="main mt-4 pb-24">
         <slot />
       </div>
-      <footer>Footer</footer>
+      <StickyBottomContainer />
     </div>
   </UApp>
 </template>
 
 <script setup lang="ts">
-import AppHeader from '~/components/shared/AppHeader.vue';
+import AppHeader from '~/components/header/AppHeader.vue';
+import StickyBottomContainer from '~/components/base/StickyBottomContainer.vue';
 </script>
