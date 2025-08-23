@@ -6,7 +6,7 @@
         Add
       </div>
     </NuxtLink>
-    <NuxtLink to="/words/all">
+    <NuxtLink to="/games/match">
       <div class="flex flex-col gap-2 items-center">
         <UIcon name="i-mdi-gamepad-variant" size="32" />
         Play

@@ -1,6 +1,6 @@
 import { useAuthStore } from '~/composables/stores/authStore/useAuthStore';
 
-const PRIVATE_ROUTES = ['/words'];
+const PRIVATE_ROUTES = ['/words', '/games'];
 
 export default defineNuxtRouteMiddleware((to) => {
   const { get } = useAuthStore();

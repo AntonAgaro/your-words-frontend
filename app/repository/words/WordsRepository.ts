@@ -1,6 +1,6 @@
 import { RepositoryFactory } from '~/repository/RepositoryFactory';
 import type { ApiResponse } from '~/repository/types';
-import type { getWordsResponse } from '~/repository/words/types';
+import type { getRandomWordsResponse, getWordsResponse } from '~/repository/words/types';
 
 export class WordsRepository extends RepositoryFactory {
   async getWords(): Promise<getWordsResponse> {
@@ -12,5 +12,9 @@ export class WordsRepository extends RepositoryFactory {
       method: 'POST',
       body: wordData,
     });
+  }
+
+  async getRandomWords(limit = 5) {
+    return this.call<getRandomWordsResponse>(`/words/random?limit=${limit}`);
   }
 }
