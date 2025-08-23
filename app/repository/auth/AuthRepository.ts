@@ -1,5 +1,6 @@
 import { RepositoryFactory } from '~/repository/RepositoryFactory';
 import type { GetUserResponse } from '~/repository/auth/types';
+import type { ApiResponse } from '~/repository/types';
 
 export class AuthRepository extends RepositoryFactory {
   async login(data: FormData) {
@@ -20,6 +21,12 @@ export class AuthRepository extends RepositoryFactory {
       headers: {
         cookie: `token=${token}`,
       },
+    });
+  }
+
+  async logout(): Promise<ApiResponse> {
+    return this.call('/auth/logout', {
+      method: 'POST',
     });
   }
 }
