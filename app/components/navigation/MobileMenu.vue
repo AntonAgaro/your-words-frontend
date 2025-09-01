@@ -18,10 +18,10 @@
         Words
       </div>
     </NuxtLink>
-    <NuxtLink to="/words/all">
+    <NuxtLink to="/translator">
       <div class="flex flex-col gap-2 items-center">
-        <UIcon name="i-ic-baseline-account-box" size="32" />
-        Profile
+        <UIcon name="i-material-symbols-translate" size="32" />
+        Translate
       </div>
     </NuxtLink>
   </div>

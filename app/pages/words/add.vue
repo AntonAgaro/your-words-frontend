@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col items-center h-full gap-y-10">
+    <AppTranslator v-if="!isMobile" />
     <h1 class="text-2xl">Add new word:</h1>
 
     <div class="main-form">
@@ -32,7 +33,9 @@
 <script setup lang="ts">
 import type { FormError } from '@nuxt/ui';
 import useSsrFetch from '~/composables/useSsrFetch';
+import AppTranslator from '~/components/translator/AppTranslator.vue';
 
+const { isMobile } = useDevice();
 const state = reactive({
   text: '',
   translation: '',

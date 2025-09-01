@@ -5,10 +5,16 @@
       <LangIcon />
     </div>
     <div class="left-side cursor-pointer flex items-center gap-6">
+      <NuxtLink v-if="!isMobile && authStore.get('user')" to="/words/all">
+        <UIcon name="i-material-symbols-dictionary" size="32" />
+      </NuxtLink>
       <NuxtLink v-if="!isMobile && authStore.get('user')" to="/games/match">
         <UIcon name="i-mdi-gamepad-variant" size="32" />
       </NuxtLink>
-      <UIcon v-if="!isMobile && authStore.get('user')" name="i-ic-baseline-account-box" size="32" />
+      <NuxtLink v-if="!isMobile && authStore.get('user')" to="/words/add">
+        <UIcon v-if="!isMobile && authStore.get('user')" name="i-material-symbols-add-notes" size="32" />
+      </NuxtLink>
+
       <LogoutButton v-if="authStore.get('user')" />
     </div>
   </header>
