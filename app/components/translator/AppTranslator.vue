@@ -4,9 +4,20 @@
       <h2>{{ `Translator from ${langFrom.toUpperCase()} to ${langTo.toUpperCase()}` }}</h2>
       <UIcon name="i-material-symbols-change-circle-rounded" class="cursor-pointer" size="32" @click="changeLang" />
     </div>
-    <div class="w-full flex justify-between flex-col gap-4 md:flex-row">
-      <UTextarea v-model="originalValue" class="w-full md:w-[30%]" :rows="10" />
-      <UTextarea v-model="translatedValue" class="w-full md:w-[30%]" :rows="10" />
+    <div class="translator__wrapper w-full flex justify-between flex-col gap-4 md:flex-row">
+      <UTextarea v-model="originalValue" class="translator__text-area w-full md:w-[30%]" :rows="10" />
+      <div class="translator__area-inner relative w-full md:w-[30%]">
+        <div v-if="isTranslateLoading" class="absolute w-full h-full bg-transparent flex items-center justify-center">
+          <UIcon name="i-lucide-loader" class="animate-spin" size="32" />
+        </div>
+        <UTextarea
+          v-model="translatedValue"
+          :disabled="isTranslateLoading"
+          class="translator__text-area w-full"
+          placeholder="Translate..."
+          :rows="10"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -15,11 +26,12 @@
 const langTo = ref('ru');
 const langFrom = ref('en');
 const originalValue = ref('');
-const translatedValue = ref('Translate');
+const translatedValue = ref('');
+const isTranslateLoading = ref(false);
 let abortController: AbortController | null = null;
 const { $api } = useNuxtApp();
 
-const debouncedTranslate = debounce((val: string) => translate(val), 450);
+const debouncedTranslate = debounce((val: string) => translate(val), 800);
 
 watch(originalValue, (value) => {
   if (!value) {
@@ -49,6 +61,8 @@ async function translate(query: string) {
 
   abortController = new AbortController();
 
+  isTranslateLoading.value = true;
+
   const res = await $api.translate.translate({
     textToTranslate: originalValue.value,
     langFrom: langFrom.value,
@@ -59,6 +73,8 @@ async function translate(query: string) {
   if (res.text) {
     translatedValue.value = res.text;
   }
+
+  isTranslateLoading.value = false;
 }
 
 // onMounted(async () => {
